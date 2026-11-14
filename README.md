@@ -5,9 +5,9 @@ Comparação de desempenho entre estruturas de dados para **inserção** e **bus
 **Disciplina:** _<preencher>_  
 **Professor(a):** _<preencher>_  
 **Equipe:**
-- _<Eduardo Malta>_
-- _<Dariwn Gabriel>_
-- _<Arthur Holanda>_
+- _<Eduardo>_
+- _<Dariwn >_
+- _<Arthur >_
 
 ---
 
