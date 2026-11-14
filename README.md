@@ -2,8 +2,8 @@
 
 Comparação de desempenho entre estruturas de dados para **inserção** e **busca por matrícula** em um Cadastro Nacional de Estudantes com até **10 milhões de registros**, implementada em C.
 
-**Disciplina:** _<preencher>_  
-**Professor(a):** _<preencher>_  
+**Disciplina:** Estrutura de Dados Lineares  
+**Professor(a):** Paulo Henrique  
 **Equipe:**
 - Eduardo Malta
 - Dariwn Gabriel
@@ -35,7 +35,7 @@ Todas usam alocação dinâmica e são organizadas como TAD (tipo opaco no `.h`,
 | Módulo | Descrição |
 |---|---|
 | `aluno.h` | Struct do registro (matrícula, nome, curso) |
-| `lista.c/.h` | Estrutura linear: lista _<simples / dupla / circular>_ encadeada |
+| `lista.c/.h` | Estrutura linear: lista unicamente encadeada circular encadeada |
 | `hash_aberto.c/.h` | Tabela hash com endereçamento aberto, sondagem _<linear / quadrática / dupla>_ |
 | `hash_encadeado.c/.h` | Tabela hash com encadeamento separado (lista encadeada por posição) |
 | `hash_funcs.c/.h` | Funções hash (ver abaixo) |
