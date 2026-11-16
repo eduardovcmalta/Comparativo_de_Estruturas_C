@@ -1,4 +1,4 @@
-/* Evita falta de clock_gettime em Linux com -std=c11 */
+// Evita falta de clock_gettime em Linux com -std=c11 
 #if !defined(_WIN32) && !defined(_POSIX_C_SOURCE)
 #define _POSIX_C_SOURCE 199309L
 #endif
@@ -16,9 +16,7 @@
 #include <time.h>
 #endif
 
-/* ------------------------------------------------------------------ */
-/* Cronometro                                                          */
-/* ------------------------------------------------------------------ */
+// Cronometro
 double agora(void)
 {
 #ifdef _WIN32
@@ -33,13 +31,12 @@ double agora(void)
 #endif
 }
 
-/* ------------------------------------------------------------------ */
-/* Leitura da base (formato: matricula;nome;curso)                     */
-/* ------------------------------------------------------------------ */
+// Leitura da base (formato: matricula;nome;curso) 
+
 static void copiar_campo(char *dest, size_t tam, const char *ini, const char *fim)
 {
     size_t n = (size_t)(fim - ini);
-    if (n >= tam) n = tam - 1;          /* trunca se passar do limite */
+    if (n >= tam) n = tam - 1;          // trunca se passar do limite 
     memcpy(dest, ini, n);
     dest[n] = '\0';
 }
@@ -60,14 +57,14 @@ Aluno *ler_base(const char *caminho, long max, long *lidos)
     char linha[512];
     long n = 0;
     while (n < max && fgets(linha, sizeof linha, f)) {
-        /* tira \r\n do final */
+        // tira \r\n do final 
         size_t len = strlen(linha);
         while (len > 0 && (linha[len - 1] == '\n' || linha[len - 1] == '\r'))
             linha[--len] = '\0';
 
         char *fim_num;
         long mat = strtol(linha, &fim_num, 10);
-        if (fim_num == linha || *fim_num != ';') continue;   /* linha invalida */
+        if (fim_num == linha || *fim_num != ';') continue;   // linha invalida 
 
         const char *ini_nome  = fim_num + 1;
         const char *pv        = strchr(ini_nome, ';');
@@ -85,12 +82,10 @@ Aluno *ler_base(const char *caminho, long max, long *lidos)
     return v;
 }
 
-/* ------------------------------------------------------------------ */
-/* Sorteio das matriculas                                              */
-/* Gerador proprio (xorshift64*): o rand() do Windows tem RAND_MAX     */
-/* de apenas 32767 e muda de sistema para sistema. Assim o sorteio e   */
-/* identico em qualquer maquina com a mesma semente.                   */
-/* ------------------------------------------------------------------ */
+// Sorteio das matriculas                                           
+// Gerador proprio (xorshift64*): o rand() do Windows tem RAND_MAX  
+// de apenas 32767 e muda de sistema para sistema. Assim o sorteio e
+// identico em qualquer maquina com a mesma semente.                
 static uint64_t xorshift64s(uint64_t *s)
 {
     uint64_t x = *s;
@@ -116,9 +111,7 @@ int *sortear_matriculas(const Aluno *base, long n_inseridos, int qtd, unsigned i
     return r;
 }
 
-/* ------------------------------------------------------------------ */
-/* Menor primo >= n                                                    */
-/* ------------------------------------------------------------------ */
+// Menor primo >= n                                                    
 static int eh_primo(unsigned long long n)
 {
     if (n < 2) return 0;
