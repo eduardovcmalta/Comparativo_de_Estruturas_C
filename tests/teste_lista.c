@@ -1,8 +1,9 @@
 // teste_lista.c: testes da fila circular unicamente encadeada.
-// Fica na raiz, fora de src/, para nao entrar no build do projeto.
+// Fica em tests/, fora de src/, para nao entrar no build do projeto.
 //
 // Compilar e rodar (PowerShell, na raiz do repositorio):
-//  gcc -std=c11 -Wall -Wextra -g -Isrc -o teste_lista.exe tests/teste_lista.c src/lista.c
+//   gcc -std=c11 -Wall -Wextra -g -Isrc -o teste_lista.exe tests/teste_lista.c src/lista.c
+//   .\teste_lista.exe
 #include <stdio.h>
 #include <string.h>
 

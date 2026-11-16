@@ -26,6 +26,8 @@ Arquivo TXT, um registro por linha, campos separados por `;`:
 | nome      | `char[64]` | nome completo           |
 | curso     | `char[32]` | nome do curso           |
 
+Na base completa, o maior nome tem 20 caracteres e o maior curso tem 23. Os limites de 64 e 32 deixam folga.
+
 A base **não** acompanha o repositório (tamanho acima do limite do GitHub e listada no `.gitignore`). Coloque o arquivo na raiz com o nome `base.txt` ou informe outro caminho na execução.
 
 ## 2. Implementações
@@ -143,6 +145,23 @@ make run100k          # ou run1m, run10m
 make clean
 ```
 
+### Testes da fila
+
+Windows (PowerShell):
+
+```powershell
+gcc -std=c11 -Wall -Wextra -g -Isrc -o teste_lista.exe tests/teste_lista.c src/lista.c
+.\teste_lista.exe
+```
+
+Linux / WSL:
+
+```bash
+gcc -std=c11 -Wall -Wextra -g -Isrc -o teste_lista tests/teste_lista.c src/lista.c && ./teste_lista
+```
+
+O resultado esperado termina com `0 falha(s)`.
+
 ### Observações
 
 - Use a **mesma máquina e o mesmo método de execução** em todos os experimentos, para que os tempos sejam comparáveis. Feche outros programas pesados durante as medições.
@@ -170,6 +189,7 @@ _<Inserir aqui as tabelas resumidas e as principais conclusões após a execuç�
 ├── src/            código-fonte (módulos .c/.h e main.c)
 ├── resultados/     CSVs gerados pelos experimentos
 ├── slides/         apresentação
+├── tests/          testes da fila circular
 ├── Makefile        compilação no Linux/WSL
 ├── .gitignore
 └── README.md
