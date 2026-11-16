@@ -1,5 +1,5 @@
 CC      = gcc
-CFLAGS  = -O2 -Wall -Wextra -std=c11 -D_POSIX_C_SOURCE=199309L
+CFLAGS  = -O2 -Wall -Wextra -std=c11
 SRC     = $(wildcard src/*.c)
 OBJ     = $(SRC:.c=.o)
 BIN     = experimento
