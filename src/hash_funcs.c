@@ -7,15 +7,13 @@ unsigned int hash_divisao(int chave, unsigned int m) {
     return (unsigned int)(chave % m);
 }
 
-// Metodo da dobra
+// FNV-1a (32 bits) sobre os 4 bytes da chave
 unsigned int hash_alternativa(int chave, unsigned int m) {
-    if (chave < 0) {
-        chave = -chave;
+    unsigned int h = 2166136261u;
+    unsigned int v = (unsigned int)chave;
+    for (int i = 0; i < 4; i++) {
+        h ^= (v >> (8 * i)) & 0xFF;
+        h *= 16777619u;
     }
-    
-    unsigned int parte1 = chave / 1000;
-    unsigned int parte2 = chave % 1000;
-    unsigned int soma = parte1 + parte2;
-    
-    return soma % m;
+    return h % m;
 }

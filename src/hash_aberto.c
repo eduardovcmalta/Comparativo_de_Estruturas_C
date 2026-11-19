@@ -10,6 +10,7 @@ typedef struct {
 
 struct hash_aberto {
     Slot *tabela;
+    unsigned char *inicial;  // 1 se o indice inicial ja foi gerado
     unsigned int m;
     unsigned int n;
     long colisoes;
@@ -26,7 +27,10 @@ HashAberto *ha_criar(unsigned int m, FuncaoHash f) {
     h->hash_func = f;
 
     h->tabela = (Slot *)malloc(m * sizeof(Slot));
-    if (h->tabela == NULL) {
+    h->inicial = (unsigned char *)calloc(m, 1);
+    if (h->tabela == NULL || h->inicial == NULL) {
+        free(h->tabela);
+        free(h->inicial);
         free(h);
         return NULL;
     }
@@ -45,6 +49,10 @@ int ha_inserir(HashAberto *h, Aluno a) {
 
     unsigned int indice = h->hash_func(a.matricula, h->m);
 
+    // colisao: indice inicial ja produzido por outra matricula
+    if (h->inicial[indice]) h->colisoes++;
+    else h->inicial[indice] = 1;
+
     for (unsigned int i = 0; i < h->m; i++) {
         unsigned int pos = (indice + i) % h->m;
 
@@ -54,8 +62,6 @@ int ha_inserir(HashAberto *h, Aluno a) {
             h->n++;
             return 1;
         }
-        
-        h->colisoes++;
     }
 
     return 0;
@@ -94,6 +100,7 @@ double ha_fator_carga(const HashAberto *h) {
 void ha_liberar(HashAberto *h) {
     if (h != NULL) {
         free(h->tabela);
+        free(h->inicial);
         free(h);
     }
 }
