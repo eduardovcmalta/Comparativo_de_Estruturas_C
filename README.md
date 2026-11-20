@@ -30,6 +30,8 @@ Na base completa, o maior nome tem 20 caracteres e o maior curso tem 23. Os limi
 
 A base **não** acompanha o repositório (tamanho acima do limite do GitHub e listada no `.gitignore`). Coloque o arquivo na raiz com o nome `base.txt` ou informe outro caminho na execução.
 
+Existe um **único arquivo de base**. Os volumes de 100 mil, 1 milhão e 10 milhões de registros não são arquivos separados: são os **primeiros N registros desse mesmo arquivo**, na ordem original. O programa lê apenas os N primeiros, então o conjunto de 100 mil está contido no de 1 milhão, que está contido no de 10 milhões.
+
 ## 2. Implementações
 
 Todas usam alocação dinâmica e são organizadas como TAD (tipo opaco no `.h`, detalhes no `.c`).
@@ -72,7 +74,7 @@ As duas funções são testadas com **sondagem** e com **encadeamento separado**
 
 ## 3. Metodologia dos experimentos
 
-- **Volumes:** 100 mil, 1 milhão e 10 milhões de registros, sempre na ordem original do arquivo.
+- **Volumes:** 100 mil, 1 milhão e 10 milhões de registros, sempre os primeiros N registros do mesmo `base.txt`, na ordem original.
 - **Etapas:** as 5 estruturas começam vazias. Os registros são inseridos progressivamente, com medições após **30%, 60% e 100%** do volume.
 - **Métricas por etapa:**
   - tempo de inserção do intervalo (0–30%, 30–60%, 60–100%);
@@ -126,7 +128,7 @@ Adicione `C:\msys64\ucrt64\bin` ao `PATH` do Windows, reabra o PowerShell e conf
 gcc -O2 -Wall -Wextra -std=c11 -o experimento.exe (Get-ChildItem src/*.c)
 ```
 
-**Executar** (a pasta `resultados/` já existe no repositório):
+**Executar** (a pasta `resultados/` já existe no repositório). As três execuções usam o mesmo `base.txt`; o segundo argumento é quantos registros ler (N), e cada execução grava o CSV do seu volume:
 
 ```powershell
 .\experimento.exe base.txt 100000   resultados/100k.csv
