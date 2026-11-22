@@ -120,7 +120,7 @@ Abra o terminal **MSYS2 UCRT64** e rode:
 pacman -S mingw-w64-ucrt-x86_64-gcc
 ```
 
-Adicione `C:\msys64\ucrt64\bin` ao `PATH` do Windows, reabra o PowerShell e confirme com `gcc --version`.
+Adicione `C:\msys64\ucrt64\bin` ao `PATH` do Windows, reabra o PowerShell e confirme com `gcc --version`. Confirme também que o compilador é de 64 bits: `gcc -dumpmachine` deve mostrar `x86_64-w64-mingw32`. Um `gcc` de 32 bits (o MinGW antigo mostra apenas `mingw32`) fica sem memória no volume de 10 milhões.
 
 **Compilar** (na raiz do repositório):
 
@@ -180,9 +180,46 @@ Para a fila, `colisoes` e `fator_carga` saem como `-1` (não se aplicam).
 
 ## 5. Resultados
 
-Os CSVs completos estão em [`resultados/`](resultados/) e os slides em [`slides/`](slides/).
+Resumo dos resultados (tempos em segundos). Os CSVs completos, com as etapas de 30%, 60% e 100%, estão em [`resultados/`](resultados/) e os slides em [`slides/apresentacao.pdf`](slides/apresentacao.pdf).
 
-_<Inserir aqui as tabelas resumidas e as principais conclusões após a execução dos experimentos.>_
+### Tempo de busca (10.000 buscas, etapa de 100%)
+
+| Estrutura | 100 mil | 1 milhão | 10 milhões |
+|---|---|---|---|
+| Fila circular | 2,83 | 61,34 | 627,99 |
+| Aberto + divisão | 0,0007 | 0,0005 | 0,0005 |
+| Aberto + FNV-1a | 0,0004 | 0,0006 | 0,0007 |
+| Encadeado + divisão | 0,0002 | 0,0004 | 0,0005 |
+| Encadeado + FNV-1a | 0,0008 | 0,0009 | 0,0008 |
+
+### Tempo de inserção (soma das três etapas)
+
+| Estrutura | 100 mil | 1 milhão | 10 milhões |
+|---|---|---|---|
+| Fila circular | 0,0051 | 0,0577 | 0,5749 |
+| Aberto + divisão | 0,0059 | 0,0725 | 0,7755 |
+| Aberto + FNV-1a | 0,0054 | 0,0683 | 0,8296 |
+| Encadeado + divisão | 0,0069 | 0,1017 | 1,06 |
+| Encadeado + FNV-1a | 0,0061 | 0,1013 | 1,11 |
+
+### Colisões (soma das três etapas) e fator de carga
+
+| Configuração | 100 mil | 1 milhão | 10 milhões |
+|---|---|---|---|
+| Aberto + divisão | 30.166 | 299.655 | 2.755.476 |
+| Aberto + FNV-1a | 30.091 | 301.115 | 2.933.519 |
+| Encadeado + divisão | 30.166 | 299.655 | 2.755.476 |
+| Encadeado + FNV-1a | 30.091 | 301.115 | 2.933.519 |
+| Fator de carga final | 0,7692 | 0,7692 | 0,7692 |
+| Tamanho da tabela (m) | 130.003 | 1.300.021 | 13.000.027 |
+
+### Conclusões
+
+- **Busca:** a fila cresce com o volume (2,83 s, 61,3 s e 628 s) e quase linearmente com o número de registros dentro de cada volume. As tabelas hash levam de 0,0001 s a 0,0009 s em qualquer volume, cerca de um milhão de vezes menos que a fila no 10M.
+- **Inserção:** cresce de forma aproximadamente linear com N. O endereçamento aberto é mais rápido que o encadeamento separado, que paga uma alocação por nó.
+- **Funções hash:** colisões quase iguais em 100 mil e 1 milhão (diferença menor que 0,5%). No 10M a divisão teve cerca de 6% menos colisões que o FNV-1a.
+- **Melhor combinação:** endereçamento aberto com divisão foi a mais consistente, mas as diferenças entre as quatro hashes são pequenas.
+- **Ressalva:** as buscas nas hashes levam menos de 1 ms, e diferenças abaixo de cerca de 0,0003 s estão perto do limite de medição.
 
 ## 6. Estrutura do repositório
 
